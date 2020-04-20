@@ -11,20 +11,24 @@ public class Pizza implements Comparable<Pizza>, Cloneable {
         this.price = price;
     }
 
+    // printer pizza ud som på menukortet.
     public String toString() {
         return String.format("%d. %s: %s.....%d.-",index, name, ingredients, price );
     }
 
+    // Sammenligner pizzaer med hinanden baseret på menu index, hvis ikke de er addet i rækkefølge.
     @Override
     public int compareTo(Pizza other) {
         return this.getIndex()-other.getIndex();
     }
 
+    // implementerer muligheden for at shallow clone pizza object
     @Override
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
 
+    // getters & setters
     public int getIndex() {
         return index;
     }

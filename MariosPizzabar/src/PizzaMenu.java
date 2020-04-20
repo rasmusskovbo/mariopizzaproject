@@ -7,6 +7,7 @@ public class PizzaMenu {
         createMenu();
     }
 
+    // sorterer jf. Pizza klasses compareTo metode.
     public void sort() {
         pizzaMenu.sort(Pizza::compareTo);
     }
@@ -20,6 +21,7 @@ public class PizzaMenu {
         return print;
     }
 
+    // instancierer pizzaer og tilføjer dem til menu
     public void createMenu() {
         Pizza test = new Pizza(5,"Test","tomatsauce, ost, skinke og oregano",57);
         Pizza vesuvio = new Pizza(1,"Vesuvio","tomatsauce, ost, skinke og oregano",57);
@@ -30,19 +32,17 @@ public class PizzaMenu {
         pizzaMenu.add(amerikaner);
     }
 
+    // tilføjer pizzaer til menu
     public void add(Pizza pizza) {
         pizzaMenu.add(pizza);
     }
 
+    // getters & setters
     public ArrayList<Pizza> getPizzaMenu() {
         return pizzaMenu;
     }
 
     public void setPizzaMenu(ArrayList<Pizza> pizzaMenu) {
         this.pizzaMenu = pizzaMenu;
-    }
-
-    public void pizzaTest() {
-        System.out.println(pizzaMenu.get(0));
     }
 }

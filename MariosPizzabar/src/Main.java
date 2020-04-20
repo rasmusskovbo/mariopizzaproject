@@ -10,6 +10,7 @@ public class Main {
 
         Order ordre1 = new Order(LocalTime.of(10,45));
         ordre1.addPizzaToOrder(pizzaMenu, 1);
+        ordre1.addPizzaToOrder(pizzaMenu, 2);
         Order ordre2 = new Order(LocalTime.of(14,30));
         ordre2.addPizzaToOrder(pizzaMenu,2);
         Order ordre3 = new Order(LocalTime.of(12,15));

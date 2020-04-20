@@ -1,5 +1,3 @@
-import java.lang.reflect.Array;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -28,9 +26,24 @@ public class Order implements Comparable<Order> {
     }
 
     public String toString() {
-        return String.format("Pick-up: "+pickupTime+", "+pizzas);
+        return String.format("Pick-up: "+pickupTime+", "+neatStringPizza());
     }
 
+    public String neatStringPizza() {
+        String print = "";
+        if (pizzas.size()>1) {
+            for (Pizza pizza:pizzas) {
+                print += pizza.getIndex()+"-";
+                print += pizza.getName()+"  ";
+            }
+        } else {
+            print += pizzas.get(0).getIndex()+"-";
+            print += pizzas.get(0).getName();
+        }
+        return print;
+    }
+
+    // getters & setters
     public LocalTime getPickupTime() {
         return pickupTime;
     }
