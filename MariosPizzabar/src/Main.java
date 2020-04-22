@@ -4,9 +4,9 @@ public class Main {
 
     public static void main(String[] args) {
         PizzaMenu pizzaMenu = new PizzaMenu();
-        System.out.print(pizzaMenu.toString());
+        System.out.print(pizzaMenu);
         pizzaMenu.sort();
-        System.out.print(pizzaMenu.toString());
+        System.out.print(pizzaMenu);
 
         Order ordre1 = new Order(LocalTime.of(10,45));
         ordre1.addPizzaToOrder(pizzaMenu, 1);

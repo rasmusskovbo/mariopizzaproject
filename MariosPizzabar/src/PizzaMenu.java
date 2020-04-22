@@ -37,7 +37,6 @@ public class PizzaMenu {
         pizzaMenu.add(new Pizza(12, "Le Blissola", "tomatsauce, ost, skinke, rejer og oregano", 61));
         pizzaMenu.add(new Pizza(13, "Venezia", "tomatsauce, ost, skinke, bacon og oregano", 61));
         pizzaMenu.add(new Pizza(14, "Mafia", "tomatsauce, ost, pepperoni, bacon, løg og oregano", 61));
-
     }
 
     // tilføjer pizzaer til menu

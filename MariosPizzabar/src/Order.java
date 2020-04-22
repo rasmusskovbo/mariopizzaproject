@@ -10,8 +10,8 @@ public class Order implements Comparable<Order> {
     }
 
     // Tager pizzaMenuen som reference, kopierer referencen til pizzaen på valgte index (fx 1 for Vesuvio) og tilføjer den til ordrens ArrayList
-    public void addPizzaToOrder(PizzaMenu pizzaMenu, int index) {
-        pizzas.add(pizzaMenu.getPizzaMenu().get(index-1));
+    public void addPizzaToOrder(PizzaMenu pizzaMenu, int number) {
+        pizzas.add(pizzaMenu.getPizzaMenu().get(number-1));
     }
 
     // Sammenligner tidspunktet når OrderList skal sammenligne.
@@ -25,22 +25,14 @@ public class Order implements Comparable<Order> {
         }
     }
 
+    // Komprimeret visning af pizzaer sammen med respektiv pick-up time
     public String toString() {
-        return String.format("Pick-up: "+pickupTime+", "+neatStringPizza());
-    }
-
-    public String neatStringPizza() {
         String print = "";
-        if (pizzas.size()>1) {
-            for (Pizza pizza:pizzas) {
-                print += pizza.getIndex()+"-";
-                print += pizza.getName()+"  ";
-            }
-        } else {
-            print += pizzas.get(0).getIndex()+"-";
-            print += pizzas.get(0).getName();
+        for (Pizza pizza:pizzas) {
+            print += pizza.getNumber()+"-";
+            print += pizza.getName()+"  ";
         }
-        return print;
+        return String.format("Pick-up: "+pickupTime+", "+print);
     }
 
     // getters & setters
