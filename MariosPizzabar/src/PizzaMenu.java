@@ -7,20 +7,6 @@ public class PizzaMenu {
         createMenu();
     }
 
-    // sorterer jf. Pizza klasses compareTo metode.
-    public void sort() {
-        pizzaMenu.sort(Pizza::compareTo);
-    }
-
-    public String toString() {
-        String print = "";
-        for (Pizza pizza:pizzaMenu) {
-            print += pizza.toString();
-            print += "\n";
-        }
-        return print;
-    }
-
     // instancierer pizzaer og tilføjer dem til menu
     public void createMenu() {
         pizzaMenu.add(new Pizza(1, "Vesuvio", "tomatsauce, ost, skinke og oregano", 57));
@@ -52,4 +38,29 @@ public class PizzaMenu {
     public void setPizzaMenu(ArrayList<Pizza> pizzaMenu) {
         this.pizzaMenu = pizzaMenu;
     }
+
+
+
+    // sorterer jf. Pizza klasses compareTo metode.
+    public void sort() {
+        pizzaMenu.sort(Pizza::compareTo);
+    }
+
+
+
+    public String toString() {
+        String print = "";
+        for (Pizza pizza:pizzaMenu) {
+            print += pizza.toString();
+            print += "\n";
+        }
+        return print;
+    }
+
+
+
+
+
+
+
 }
