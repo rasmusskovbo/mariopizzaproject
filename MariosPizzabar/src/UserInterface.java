@@ -1,4 +1,7 @@
+import java.util.Scanner;
+
 public class UserInterface {
+    private Scanner in = new Scanner(System.in);
 
     public void displayMainMenu() {
         System.out.println("\n--Main Menu--");
@@ -19,11 +22,7 @@ public class UserInterface {
 
         displayMsg("Press enter to return to the main menu.");
 
-        try {
-            System.in.read();
-        }
-        catch (Exception e) {
-        }
+        in.nextLine();
 
     }
  }

@@ -23,7 +23,7 @@ import java.util.Scanner;
 
         public void menuOptions() {
 
-            switch(intValidation(6)) {
+            switch(intValidation(6,1)) {
 
                 case 1:
                     seeMenu();
@@ -55,44 +55,6 @@ import java.util.Scanner;
             }
         }
 
-        // Method overload giver mulighed for at indsætte check for maximum
-        public int intValidation(int maxAmount) {
-            while (true) {
-                try {
-                    if (!input.hasNextInt()) {
-                        input.nextLine();
-                        throw new NotAValidOptionException("Not a valid input. Please enter a number");
-                    } else {
-                        int choice = input.nextInt();
-                        if (choice > maxAmount) {
-                            input.nextLine();
-                            throw new NotAValidOptionException("Not a valid input. Number must be equal to or lower than " + maxAmount +": ");
-                        } else {
-                            return choice;
-                        }
-                    }
-                } catch (NotAValidOptionException e) {
-                    System.out.print(e);
-                }
-            }
-        }
-
-        public int intValidation() {
-            while (true) {
-                try {
-                    if (!input.hasNextInt()) {
-                        input.nextLine();
-                        throw new NotAValidOptionException("Not a valid input. Please enter a number: ");
-                    } else {
-                        return input.nextInt();
-                    }
-                } catch (NotAValidOptionException e) {
-                    input.nextLine();
-                    System.out.print(e);
-                }
-            }
-        }
-
         public void seeMenu() {
 
             ui.displayMsg("\n--Pizza Menu--");
@@ -101,38 +63,32 @@ import java.util.Scanner;
         }
 
         public void seeOrders() {
-            ui.displayMsg("--Current Orders--");
+            ui.displayMsg("\n--Current Orders--");
 
-            if (orderList.getOrderList().size() < 1) {
-
-                ui.displayMsg("Currently no orders.");
-
-            } else {
-
+            if (checkForOrders()) {
                 orderList.sortByPickupTime();
-                ui.displayMsg("\n"+orderList);
-
+                ui.displayMsg(orderList.toString());
             }
 
         }
 
         public void createOrder() {
-            ui.displayMsg("--New Order--");
+            ui.displayMsg("\n--New Order--");
             ui.displayMsg("Please enter amount of pizza: ");
-            int amountPizza = intValidation();
+            int amountPizza = intValidation(100,1);
 
             ui.displayMsg("Please enter hour of pickup: ");
-            int hour = intValidation(23);
+            int hour = intValidation(23,0);
 
             ui.displayMsg("Please enter minutes of pickup: ");
-            int minute = intValidation(59);
+            int minute = intValidation(59,0);
 
             // TODO: Evt. check at tid er senere end LocalTime.now
             Order order = new Order(LocalTime.of(hour, minute));
 
             while (amountPizza > 0) {
                 ui.displayMsg("(Pizzas left to enter "+amountPizza+"). Enter pizza ID from menu: ");
-                order.addPizza(pizzaMenu.getPizzaMenu().get(intValidation(14) - 1));
+                order.addPizza(pizzaMenu.getPizzaMenu().get(intValidation(14,1) - 1));
                 amountPizza--;
             }
 
@@ -142,29 +98,63 @@ import java.util.Scanner;
         }
 
         public void removeOrder() {
-            ui.displayMsg("--Remove Order--");
-            orderList.sortByPickupTime();
-            seeOrders();
+            ui.displayMsg("\n--Remove Order--");
+            if (checkForOrders()) {
+                orderList.sortByPickupTime();
+                seeOrders();
 
-            ui.displayMsg("Please enter ID of the order you would like to remove: ");
-            boolean flag = false;
-            Order removedOrder = null;
-            while (!flag) {
-                int choice = intValidation(orderList.getOrderList().get(0).getOrderIDcount());
-                for (int i = 0; i < orderList.getOrderList().size(); i++)
-                    if (orderList.getOrderList().get(i).getOrderID() == choice) {
-                        removedOrder = orderList.getOrderList().get(i);
-                        orderList.removeOrder(i);
-                        flag = true;
-                    } else {
-                        ui.displayMsg("Order ID not found. Please check your input.");
-                    }
+                ui.displayMsg("Please enter ID of the order you would like to remove: ");
+                boolean flag = false;
+                Order removedOrder = null;
+                while (!flag) {
+                    int choice = intValidation(orderList.getOrderList().get(0).getOrderIDcount(),0);
+                    for (int i = 0; i < orderList.getOrderList().size(); i++)
+                        if (orderList.getOrderList().get(i).getOrderID() == choice) {
+                            removedOrder = orderList.getOrderList().get(i);
+                            orderList.removeOrder(i);
+                            flag = true;
+                        } else {
+                            ui.displayMsg("Order ID not found. Please check your input.");
+                        }
+                }
+
+                ui.displayMsg("You've succesfully removed order no.: " + removedOrder.getOrderID());
             }
-
-            ui.displayMsg("You've succesfully removed order no.: "+removedOrder.getOrderID());
 
         }
 
+        public boolean checkForOrders() {
+            if (orderList.getOrderList().size() < 1) {
+                ui.displayMsg("Currently no orders.");
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        // Tager en max værdi og checker at input er et nummer lige med nul eller større og lavere end max værdi
+        public int intValidation(int maxAmount, int minAmount) {
+            int choice = 0;
+            while (true) {
+                choice = 0;
+                try {
+                    if (!input.hasNextInt()) {
+                        input.nextLine();
+                        throw new NotAValidOptionException("Not a valid input. Please enter a number: ");
+                    } else {
+                        choice = input.nextInt();
+                        if (choice > maxAmount || choice < 0 || choice < minAmount) {
+                            input.nextLine();
+                            throw new NotAValidOptionException("Not a valid input. Number must be higher than "+minAmount+" and equal to or lower than " + maxAmount +": ");
+                        } else {
+                            return choice;
+                        }
+                    }
+                } catch (NotAValidOptionException e) {
+                    System.out.print(e);
+                }
+            }
+        }
         /*
         Forsøg med regular expression matching. Mangler måde at skille string af på og gøre til time object.
 
@@ -191,6 +181,23 @@ import java.util.Scanner;
             } while (!flag);
 
             return in;
+        }
+
+        // Simpel int validation
+        public int intValidation() {
+            while (true) {
+                try {
+                    if (!input.hasNextInt()) {
+                        input.nextLine();
+                        throw new NotAValidOptionException("Not a valid input. Please enter a number: ");
+                    } else {
+                        return input.nextInt();
+                    }
+                } catch (NotAValidOptionException e) {
+                    input.nextLine();
+                    System.out.print(e);
+                }
+            }
         }
         */
     }
