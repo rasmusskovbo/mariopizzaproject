@@ -65,7 +65,7 @@ import java.util.Scanner;
         public void seeOrders() {
             ui.displayMsg("\n--Current Orders--");
 
-            if (checkForOrders()) {
+            if (ordersAreAvailable()) {
                 orderList.sortByPickupTime();
                 ui.displayMsg(orderList.toString());
             }
@@ -99,7 +99,7 @@ import java.util.Scanner;
 
         public void removeOrder() {
             ui.displayMsg("\n--Remove Order--");
-            if (checkForOrders()) {
+            if (ordersAreAvailable()) {
                 orderList.sortByPickupTime();
                 seeOrders();
 
@@ -123,7 +123,7 @@ import java.util.Scanner;
 
         }
 
-        public boolean checkForOrders() {
+        public boolean ordersAreAvailable() {
             if (orderList.getOrderList().size() < 1) {
                 ui.displayMsg("Currently no orders.");
                 return false;
