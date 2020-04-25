@@ -1,5 +1,4 @@
 public class UserInterface {
-    private int number;
 
     public void displayMainMenu() {
         System.out.println("\n--Main Menu--");
