@@ -1,69 +1,31 @@
-import java.util.Scanner;
-
 public class UserInterface {
+    private int number;
 
-    Scanner input = new Scanner(System.in);
-    int number;
+    public void displayMainMenu() {
+        System.out.println("\n--Main Menu--");
+        System.out.println("1. See menu");
+        System.out.println("2. See current orders");
+        System.out.println("3. Create order");
+        System.out.println("4. Remove order");
+        System.out.println("5. Statistics");
+        System.out.println("6. Exit");
+        System.out.print("Enter option: ");
+    }
 
-
-
-
-    public void userDisplayMessage(String text){
+    public void displayMsg(String text){
         System.out.println(text);
     }
 
+    public void returnOption() {
 
+        displayMsg("Press enter to return to the main menu.");
 
-    public int pickingMenuOptionNumber() {
-
-        number = input.nextInt(); //skal valideres
-        input.nextLine(); //clear buffer
-        return number;
-
-
-    }
-
-
-    public int orderPizzaAmount () {
-
-        number = input.nextInt(); //skal valideres
-        input.nextLine(); //clear buffer
-        return number;
+        try {
+            System.in.read();
+        }
+        catch (Exception e) {
+        }
 
     }
+ }
 
-    public int orderDelieveryHour() {
-
-
-        number = input.nextInt(); //skal valideres
-        input.nextLine(); //clear buffer
-        return number;
-    }
-
-
-    public int orderDelieveryMinute() {
-
-        number = input.nextInt(); //skal valideres
-        input.nextLine(); //clear buffer
-        return number;
-    }
-
-
-    public int orderPizzaNumber() {
-
-        number = input.nextInt(); //skal valideres
-        input.nextLine(); //clear buffer
-        return number;
-    }
-
-    public int removeOrder() {
-
-        number = input.nextInt() - 1; //skal valideres.. Minus 1 fordi, arraylist indexer fra 0
-        input.nextLine(); //clear buffer
-        return number;
-
-
-    }
-
-
-}

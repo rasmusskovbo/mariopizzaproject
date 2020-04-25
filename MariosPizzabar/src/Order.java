@@ -2,11 +2,20 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Order implements Comparable<Order> {
+    private static int orderIDcount = 99;
+    private int orderID;
     private LocalTime pickupTime;
     private ArrayList<Pizza> pizzas = new ArrayList<>();
 
     public Order (LocalTime pickupTime) {
         this.pickupTime = pickupTime;
+        orderIDcount++;
+        orderID = orderIDcount;
+    }
+
+
+    public void addPizza(Pizza pizza) {
+        pizzas.add(pizza);
     }
 
     // Tager pizzaMenuen som reference, kopierer referencen til pizzaen på valgte index (fx 1 for Vesuvio) og tilføjer den til ordrens ArrayList
@@ -16,6 +25,8 @@ public class Order implements Comparable<Order> {
 
     // Sammenligner tidspunktet når OrderList skal sammenligne.
     public int compareTo(Order other) {
+        // return this.pickupTime.compareTo(other.pickupTime);
+
         if (other.pickupTime.isBefore(pickupTime)) {
             return +1;
         } else if (other.pickupTime.isAfter(pickupTime)) {
@@ -32,10 +43,22 @@ public class Order implements Comparable<Order> {
             print += pizza.getNumber()+"-";
             print += pizza.getName()+"  ";
         }
-        return String.format("Pick-up: "+pickupTime+", "+print);
+        return String.format("Pick-up time: "+pickupTime+", Order ID: "+orderID+", Pizzas: "+print);
     }
 
     // getters & setters
+    public int getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
+    }
+
+    public int getOrderIDcount() {
+        return orderIDcount;
+    }
+
     public LocalTime getPickupTime() {
         return pickupTime;
     }
