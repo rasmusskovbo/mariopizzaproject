@@ -2,27 +2,26 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Order implements Comparable<Order> {
+    private static int orderIDcount = 99;
+    private int orderID;
     private LocalTime pickupTime;
     private ArrayList<Pizza> pizzas = new ArrayList<>();
+    private boolean isOrderComplete = false;
 
     public Order (LocalTime pickupTime) {
         this.pickupTime = pickupTime;
+        orderIDcount++;
+        orderID = orderIDcount;
     }
 
-    // Tager pizzaMenuen som reference, kopierer referencen til pizzaen på valgte index (fx 1 for Vesuvio) og tilføjer den til ordrens ArrayList
-    public void addPizzaToOrder(PizzaMenu pizzaMenu, int number) {
-        pizzas.add(pizzaMenu.getPizzaMenu().get(number-1));
+
+    public void addPizza(Pizza pizza) {
+        pizzas.add(pizza);
     }
 
     // Sammenligner tidspunktet når OrderList skal sammenligne.
     public int compareTo(Order other) {
-        if (other.pickupTime.isBefore(pickupTime)) {
-            return +1;
-        } else if (other.pickupTime.isAfter(pickupTime)) {
-            return -1;
-        } else {
-            return 0;
-        }
+        return this.pickupTime.compareTo(other.pickupTime);
     }
 
     // Komprimeret visning af pizzaer sammen med respektiv pick-up time
@@ -32,10 +31,22 @@ public class Order implements Comparable<Order> {
             print += pizza.getNumber()+"-";
             print += pizza.getName()+"  ";
         }
-        return String.format("Pick-up: "+pickupTime+", "+print);
+        return String.format("Pick-up time: "+pickupTime+", Order ID: "+orderID+", Pizzas: "+print);
     }
 
     // getters & setters
+    public int getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
+    }
+
+    public int getOrderIDcount() {
+        return orderIDcount;
+    }
+
     public LocalTime getPickupTime() {
         return pickupTime;
     }
@@ -50,5 +61,21 @@ public class Order implements Comparable<Order> {
 
     public void setPizzas(ArrayList<Pizza> pizzas) {
         this.pizzas = pizzas;
+    }
+
+    public boolean isOrderComplete() {
+        return isOrderComplete;
+    }
+
+    public void setOrderComplete(boolean orderComplete) {
+        isOrderComplete = orderComplete;
+    }
+
+    public int getTotalPrice() {
+        int totalPrice = 0;
+        for (Pizza pizza:pizzas) {
+            totalPrice += pizza.getPrice();
+        }
+        return totalPrice;
     }
 }

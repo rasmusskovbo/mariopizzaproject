@@ -1,69 +1,35 @@
 import java.util.Scanner;
 
 public class UserInterface {
+    private Scanner in = new Scanner(System.in);
 
-    Scanner input = new Scanner(System.in);
-    int number;
+    public void displayMainMenu() {
+        displayMsg("\n--Main Menu--");
+        displayMsg("1. See menu");
+        displayMsg("2. See current orders");
+        displayMsg("3. Create order");
+        displayMsg("4. Remove order");
+        displayMsg("5. Statistics");
+        displayMsg("6. Exit");
+        displayMsg("Enter option: ");
+    }
 
-
-
-
-    public void userDisplayMessage(String text){
+    public void displayMsg(String text){
         System.out.println(text);
     }
 
-
-
-    public int pickingMenuOptionNumber() {
-
-        number = input.nextInt(); //skal valideres
-        input.nextLine(); //clear buffer
-        return number;
-
-
+    public void displayRemoveOrderMenu() {
+        displayMsg("Is order complete or cancelled?");
+        displayMsg("1. Complete");
+        displayMsg("2. Cancelled");
     }
 
+    public void enterToReturn() {
 
-    public int orderPizzaAmount () {
+        displayMsg("Press enter to return to the main menu.");
 
-        number = input.nextInt(); //skal valideres
-        input.nextLine(); //clear buffer
-        return number;
-
-    }
-
-    public int orderDelieveryHour() {
-
-
-        number = input.nextInt(); //skal valideres
-        input.nextLine(); //clear buffer
-        return number;
-    }
-
-
-    public int orderDelieveryMinute() {
-
-        number = input.nextInt(); //skal valideres
-        input.nextLine(); //clear buffer
-        return number;
-    }
-
-
-    public int orderPizzaNumber() {
-
-        number = input.nextInt(); //skal valideres
-        input.nextLine(); //clear buffer
-        return number;
-    }
-
-    public int removeOrder() {
-
-        number = input.nextInt() - 1; //skal valideres.. Minus 1 fordi, arraylist indexer fra 0
-        input.nextLine(); //clear buffer
-        return number;
-
+        in.nextLine();
 
     }
+ }
 
-
-}
