@@ -26,15 +26,7 @@ public class Order implements Comparable<Order> {
 
     // Sammenligner tidspunktet når OrderList skal sammenligne.
     public int compareTo(Order other) {
-        // return this.pickupTime.compareTo(other.pickupTime);
-
-        if (other.pickupTime.isBefore(pickupTime)) {
-            return +1;
-        } else if (other.pickupTime.isAfter(pickupTime)) {
-            return -1;
-        } else {
-            return 0;
-        }
+        return this.pickupTime.compareTo(other.pickupTime);
     }
 
     // Komprimeret visning af pizzaer sammen med respektiv pick-up time

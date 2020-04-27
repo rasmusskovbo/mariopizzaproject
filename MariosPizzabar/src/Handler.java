@@ -152,17 +152,22 @@ import java.util.Scanner;
             boolean flag = false;
             Order removedOrder = null;
             while (!flag) {
-                int choice = intValidation(orderList.getOrderList().get(0).getOrderIDcount(),-1);
-                for (int i = 0; i < orderList.getOrderList().size(); i++)
-                    if (orderList.getOrderList().get(i).getOrderID() == choice) {
-                        removedOrder = orderList.getOrderList().get(i);
-                        orderList.removeOrder(i);
-                        flag = true;
-                    } else if (choice == 0) {
-                        return null;
-                    } else {
+                int choice = 0;
+                choice = intValidation(orderList.getOrderList().get(0).getOrderIDcount(), -1);
+                if (choice == 0) {
+                    return null;
+                } else {
+                    for (int i = 0; i < orderList.getOrderList().size(); i++) {
+                        if (orderList.getOrderList().get(i).getOrderID() == choice) {
+                            removedOrder = orderList.getOrderList().get(i);
+                            orderList.removeOrder(i);
+                            flag = true;
+                        }
+                    }
+                    if (flag == false) {
                         ui.displayMsg("Order ID not found. Please check your input.");
                     }
+                }
             }
             return removedOrder;
         }
