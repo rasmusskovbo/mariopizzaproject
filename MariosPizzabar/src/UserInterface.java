@@ -4,21 +4,27 @@ public class UserInterface {
     private Scanner in = new Scanner(System.in);
 
     public void displayMainMenu() {
-        System.out.println("\n--Main Menu--");
-        System.out.println("1. See menu");
-        System.out.println("2. See current orders");
-        System.out.println("3. Create order");
-        System.out.println("4. Remove order");
-        System.out.println("5. Statistics");
-        System.out.println("6. Exit");
-        System.out.print("Enter option: ");
+        displayMsg("\n--Main Menu--");
+        displayMsg("1. See menu");
+        displayMsg("2. See current orders");
+        displayMsg("3. Create order");
+        displayMsg("4. Remove order");
+        displayMsg("5. Statistics");
+        displayMsg("6. Exit");
+        displayMsg("Enter option: ");
     }
 
     public void displayMsg(String text){
         System.out.println(text);
     }
 
-    public void returnOption() {
+    public void displayRemoveOrderMenu() {
+        displayMsg("Is order complete or cancelled?");
+        displayMsg("1. Complete");
+        displayMsg("2. Cancelled");
+    }
+
+    public void enterToReturn() {
 
         displayMsg("Press enter to return to the main menu.");
 

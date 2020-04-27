@@ -6,6 +6,7 @@ public class Order implements Comparable<Order> {
     private int orderID;
     private LocalTime pickupTime;
     private ArrayList<Pizza> pizzas = new ArrayList<>();
+    private boolean isOrderComplete = false;
 
     public Order (LocalTime pickupTime) {
         this.pickupTime = pickupTime;
@@ -73,5 +74,21 @@ public class Order implements Comparable<Order> {
 
     public void setPizzas(ArrayList<Pizza> pizzas) {
         this.pizzas = pizzas;
+    }
+
+    public boolean isOrderComplete() {
+        return isOrderComplete;
+    }
+
+    public void setOrderComplete(boolean orderComplete) {
+        isOrderComplete = orderComplete;
+    }
+
+    public int getTotalPrice() {
+        int totalPrice = 0;
+        for (Pizza pizza:pizzas) {
+            totalPrice += pizza.getPrice();
+        }
+        return totalPrice;
     }
 }

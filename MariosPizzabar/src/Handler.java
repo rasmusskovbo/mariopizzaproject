@@ -6,6 +6,7 @@ import java.util.Scanner;
         private OrderList orderList = new OrderList();
         private UserInterface ui = new UserInterface();
         private Scanner input = new Scanner(System.in);
+        private Statistics statistics = new Statistics();
 
         public Handler() {
             menu();
@@ -27,27 +28,27 @@ import java.util.Scanner;
 
                 case 1:
                     seeMenu();
-                    ui.returnOption();
+                    ui.enterToReturn();
                     break;
 
                 case 2:
                     seeOrders();
-                    ui.returnOption();
+                    ui.enterToReturn();
                     break;
 
                 case 3:
                     createOrder();
-                    ui.returnOption();
+                    ui.enterToReturn();
                     break;
 
                 case 4:
                     removeOrder();
-                    ui.returnOption();
+                    ui.enterToReturn();
                     break;
 
                 case 5:
-                    ui.displayMsg("Nothing to see here yet.");
-                    ui.returnOption();
+                    showStatistics();
+                    ui.enterToReturn();
                     break;
 
                 case 6:
@@ -65,7 +66,7 @@ import java.util.Scanner;
         public void seeOrders() {
             ui.displayMsg("\n--Current Orders--");
 
-            if (ordersAreAvailable()) {
+            if (isOrderAvailable()) {
                 orderList.sortByPickupTime();
                 ui.displayMsg(orderList.toString());
             }
@@ -84,46 +85,89 @@ import java.util.Scanner;
             int minute = intValidation(59,0);
 
             // TODO: Evt. check at tid er senere end LocalTime.now
-            Order order = new Order(LocalTime.of(hour, minute));
+            Order order = createOrderLoop(amountPizza, hour, minute);
 
-            while (amountPizza > 0) {
-                ui.displayMsg("(Pizzas left to enter "+amountPizza+"). Enter pizza ID from menu: ");
-                order.addPizza(pizzaMenu.getPizzaMenu().get(intValidation(14,1) - 1));
-                amountPizza--;
-            }
-
-            ui.displayMsg("New order confirmed: "+order.toString());
             orderList.addOrder(order);
+            ui.displayMsg("New order confirmed: "+order.toString());
 
         }
 
         public void removeOrder() {
             ui.displayMsg("\n--Remove Order--");
-            if (ordersAreAvailable()) {
+            if (isOrderAvailable()) {
                 orderList.sortByPickupTime();
                 seeOrders();
 
-                ui.displayMsg("Please enter ID of the order you would like to remove: ");
-                boolean flag = false;
-                Order removedOrder = null;
-                while (!flag) {
-                    int choice = intValidation(orderList.getOrderList().get(0).getOrderIDcount(),0);
-                    for (int i = 0; i < orderList.getOrderList().size(); i++)
-                        if (orderList.getOrderList().get(i).getOrderID() == choice) {
-                            removedOrder = orderList.getOrderList().get(i);
-                            orderList.removeOrder(i);
-                            flag = true;
-                        } else {
-                            ui.displayMsg("Order ID not found. Please check your input.");
-                        }
+                ui.displayMsg("Please enter ID of the order you would like to remove. 0 to return to menu: ");
+                Order orderHolder = removeOrderLoop(); //returner null object hvis brugeren vil forlade menu
+
+                if (orderHolder != null) { //hvis brugeren vil forlade menuen ref ovenstående springes dette over.
+                    if (isOrderComplete(orderHolder)) {
+                        ui.displayMsg("You've succesfully completed order no.: " + orderHolder.getOrderID()+". It has been added to statistics");
+                        statistics.addOrder(orderHolder);
+                    } else {
+                        ui.displayMsg("You've succesfully removed order no.: " + orderHolder.getOrderID());
+                    }
+
                 }
-
-                ui.displayMsg("You've succesfully removed order no.: " + removedOrder.getOrderID());
             }
-
         }
 
-        public boolean ordersAreAvailable() {
+        public void showStatistics() {
+            ui.displayMsg("--Statistics--");
+            ui.displayMsg("Total revenue: "+statistics.getTotalRevenue());
+            ui.displayMsg("Total pizzas sold: "+statistics.getTotalPizzasSold());
+            ui.displayMsg("Sold pizzas by menu no:  1  2  3  4  5  6  7  8  9  10 11 12 13 14");
+            ui.displayMsg("                        "+statistics.getSoldPizzaTracker());
+        }
+
+        public boolean isOrderComplete(Order order) {
+            ui.displayRemoveOrderMenu();
+            while (true) {
+                switch (intValidation(2,0)) {
+
+                    // complete
+                    case 1:
+                        return true;
+
+                    // cancelled
+                    case 2:
+                        return false;
+                }
+            }
+        }
+
+        public Order createOrderLoop(int amountOfPizza, int hour, int minute) {
+            Order order = new Order(LocalTime.of(hour, minute));
+
+            while (amountOfPizza > 0) {
+                ui.displayMsg("(Pizzas left to enter "+amountOfPizza+"). Enter pizza ID from menu: ");
+                order.addPizza(pizzaMenu.getPizzaMenu().get(intValidation(14,1) - 1));
+                amountOfPizza--;
+            }
+            return order;
+        }
+
+        public Order removeOrderLoop() {
+            boolean flag = false;
+            Order removedOrder = null;
+            while (!flag) {
+                int choice = intValidation(orderList.getOrderList().get(0).getOrderIDcount(),-1);
+                for (int i = 0; i < orderList.getOrderList().size(); i++)
+                    if (orderList.getOrderList().get(i).getOrderID() == choice) {
+                        removedOrder = orderList.getOrderList().get(i);
+                        orderList.removeOrder(i);
+                        flag = true;
+                    } else if (choice == 0) {
+                        return null;
+                    } else {
+                        ui.displayMsg("Order ID not found. Please check your input.");
+                    }
+            }
+            return removedOrder;
+        }
+
+        public boolean isOrderAvailable() {
             if (orderList.getOrderList().size() < 1) {
                 ui.displayMsg("Currently no orders.");
                 return false;
@@ -136,7 +180,7 @@ import java.util.Scanner;
         public int intValidation(int maxAmount, int minAmount) {
             int choice = 0;
             while (true) {
-                choice = 0;
+                choice = 0; //reset valg efter hvert loop
                 try {
                     if (!input.hasNextInt()) {
                         input.nextLine();
@@ -155,6 +199,7 @@ import java.util.Scanner;
                 }
             }
         }
+
         /*
         Forsøg med regular expression matching. Mangler måde at skille string af på og gøre til time object.
 
